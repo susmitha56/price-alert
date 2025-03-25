@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Price Alerts - Dark Blue</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #0a192f; /* Dark blue background */
+        color: #ffffff;
+      }
+      h1 {
+        color: #64ffda; /* Accent color */
+      }
+      .container {
+        background: #112240; /* Darker blue container */
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+        text-align: center;
+        width: 380px;
+      }
+      input,
+      button {
+        padding: 12px;
+        margin: 10px 0;
+        width: 90%;
+        font-size: 14px;
+        border: none;
+        outline: none;
+      }
+      input {
+        background: #233554;
+        color: #ffffff;
+        border: 1px solid #64ffda;
+        border-radius: 5px;
+      }
+      input::placeholder {
+        color: #a8b2d1;
+      }
+      .price {
+        font-size: 32px;
+        font-weight: bold;
+        color: #64ffda;
+      }
+      .alert {
+        color: #ff6363;
+        font-weight: bold;
+      }
+      button {
+        background-color: #64ffda;
+        color: #0a192f;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+        border-radius: 5px;
+      }
+      button:hover {
+        background-color: #52e0c4;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>💰 Price Alerts</h1>
+    <div class="container">
+      <div>Current Price: <span class="price" id="price">$0.00</span></div>
+      <input type="number" id="alertPrice" placeholder="Set alert price ($)" />
+      <button onclick="setAlert()">Set Alert</button>
+      <p id="notification" class="alert"></p>
+    </div>
+
+    <script>
+      let currentPrice = 0;
+      let alertPrice = null;
+
+      // Function to generate random price
+      function generatePrice() {
+        currentPrice = (Math.random() * 200).toFixed(2); // Random price between $0 - $200
+        document.getElementById("price").textContent = `$${currentPrice}`;
+
+        // Check for alert trigger
+        if (alertPrice && parseFloat(currentPrice) >= alertPrice) {
+          document.getElementById(
+            "notification"
+          ).textContent = `🔔 Price alert! Price reached $${alertPrice}`;
+          alertPrice = null; // Reset alert
+        }
+      }
+
+      // Set alert price
+      function setAlert() {
+        const priceInput = parseFloat(
+          document.getElementById("alertPrice").value
+        );
+        if (!isNaN(priceInput) && priceInput > 0) {
+          alertPrice = priceInput;
+          document.getElementById(
+            "notification"
+          ).textContent = `✅ Alert set at $${alertPrice}`;
+        } else {
+          document.getElementById(
+            "notification"
+          ).textContent = `⚠️ Invalid alert price`;
+        }
+      }
+
+      // Generate new random price every 2 seconds
+      setInterval(generatePrice, 2000);
+    </script>
+  </body>
+</html>
